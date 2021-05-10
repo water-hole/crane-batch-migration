@@ -1,0 +1,23 @@
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+  - "{{ playbook_dir }}/config.yml"
+  vars:
+    durations: "{{ item }}"
+  tasks:
+  - name: Download crane
+    get_url:
+      url: http://people.redhat.com/jmontleo/crane
+      dest: "{{ crane_path }}"
+      mode: 0755
+    when: download_crane
+
+  - name: Run batched export
+    include_tasks: crane-export-batch.yml
+    loop: "{{ namespaces | batch(batch_count) | list }}"
+
+  - name: Create transforms
+    shell: "{{ crane_path }}/crane transform --from-openshift --export-dir=export/resources"
+
+  - name: Apply Transforms
+    shell: "{{ crane_path }}/crane apply --export-dir=export/resources"

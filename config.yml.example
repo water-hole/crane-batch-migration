@@ -1,0 +1,7 @@
+download_crane: true
+batch_count: 10
+src_kubeconfig:
+dst_kubeconfig:
+crane_path: "{{ playbook_dir }}"
+namespaces:
+- robot-shop
