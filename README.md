@@ -4,7 +4,9 @@ This playbook will run the crane PoC utility asynchronously against batches of n
 # Usage
 1. Copy `config.yml.example` to `config.yml`.
 1. Edit `config.yml` with desired values.
-1. Run `ansible-playbook crane-migration-playbook.yml`
+1. Run `ansible-playbook crane-export-playbook.yml`
+1. Verify exported content
+1. Run `ansible-playbook crane-import-playbook.yml`
 
 # Options
 - **crane_path**: Path to the directory that contains the crane binary. **Default**: `{{ playbook_dir }}`

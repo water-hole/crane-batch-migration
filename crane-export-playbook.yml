@@ -6,10 +6,19 @@
     durations: "{{ item }}"
   tasks:
   - name: Download crane
-    get_url:
-      url: http://people.redhat.com/jmontleo/crane
-      dest: "{{ crane_path }}"
-      mode: 0755
+    # get_url downloads every time even if force=no
+    # this causes a pretty long delay since the file is
+    # somewhat large
+    # https://github.com/ansible/ansible/issues/64016
+    #
+    #get_url:
+    #  url: http://people.redhat.com/jmontleo/crane
+    #  dest: "{{ crane_path }}"
+    #  mode: 0755
+    #
+    shell: "wget -N -P {{ crane_path }} http://people.redhat.com/jmontleo/crane && chmod 755 {{ crane_path }}/crane"
+    args:
+      warn: false
     when: download_crane
 
   - name: Run batched export
