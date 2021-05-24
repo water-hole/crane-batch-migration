@@ -1,6 +1,5 @@
 - name: import namespace
   shell: |
-         oc new-project {{ async_item }} &&
          oc create -l exported-by!=crane2 -f {{ crane_path }}/output/{{ async_item }}
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
