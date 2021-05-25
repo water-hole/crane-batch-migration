@@ -5,6 +5,22 @@
   vars:
     durations: "{{ item }}"
   tasks:
+  - name: Move tokens
+    include_tasks: crane-import-move-tokens.yml
+    with_items: "{{ namespaces }}"
+
+  - name: Delete kube-root-ca.crt configmap
+    include_tasks: crane-import-delete-kube-root-ca.yml
+    with_items: "{{ namespaces }}"
+
   - name: Run batched import
     include_tasks: crane-import-batch.yml
+    loop: "{{ namespaces | batch(batch_count) | list }}"
+
+  - name: Edit tokens
+    include_tasks: crane-import-edit-tokens.yml
+    with_items: "{{ namespaces }}"
+
+  - name: Create tokens
+    include_tasks: crane-import-tokens.yml
     loop: "{{ namespaces | batch(batch_count) | list }}"

@@ -1,6 +1,6 @@
-- name: import namespace
+- name: import tokens
   shell: |
-         oc create -f {{ crane_path }}/output/{{ async_item }}
+         oc create -f {{ crane_path }}/output/{{ async_item }}-tokens
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
   async: 360

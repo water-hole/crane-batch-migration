@@ -1,0 +1,16 @@
+- name: read yaml
+  set_fact:
+    token_yaml: "{{ lookup('file', token.path) | from_yaml }}"
+
+- name: Get the updated service account uid
+  shell: |
+         oc get sa -n {{ namespace }} {{ token_yaml.metadata.annotations['kubernetes.io/service-account.name'] }} -o go-template='{% raw %}{{ .metadata.uid }}{% endraw %}'
+  environment:
+    KUBECONFIG: "{{ dst_kubeconfig }}"
+  register: uid
+
+- name: replace uid
+  replace: 
+    path: "{{ token.path }}"
+    regexp: '^    kubernetes\.io/service-account\.uid:.*'
+    replace: "    kubernetes.io/service-account.uid: {{ uid.stdout }}"
