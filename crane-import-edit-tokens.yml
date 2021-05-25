@@ -1,0 +1,15 @@
+- name: Find tokens
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}-tokens"
+    recurse: true
+    patterns: 'Secret.*token.*yaml'
+    use_regex: true
+  register: tokens
+
+- name: Edit Tokens
+  include_tasks: crane-import-edit-tokens-loop.yml
+  with_items: "{{ tokens.files }}"  
+  loop_control:
+    loop_var: token
+  vars:
+    namespace: "{{ item }}"   

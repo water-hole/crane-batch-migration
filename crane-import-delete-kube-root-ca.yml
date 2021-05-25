@@ -1,0 +1,4 @@
+- name: Delete kube-root-ca.crt configmap if it exists
+  file:
+    state: absent
+    path: "{{ playbook_dir }}/output/{{ item }}/ConfigMap_{{ item }}_kube-root-ca.crt.yaml"

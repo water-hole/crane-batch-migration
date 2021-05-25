@@ -28,19 +28,5 @@
   - name: Create transforms
     shell: "{{ crane_path }}/crane transform --from-openshift --export-dir=export/resources"
 
-  - name: Find token transforms
-    find:
-      path: "{{ playbook_dir }}/transform"
-      recurse: true
-      patterns: 'transforms-Secret.*token.*yaml'
-      use_regex: true
-    register: tokens
-
-  - name: Add token label json patch
-    copy:
-      content: '[{"op":"add","path":"/metadata/labels", "value": {}},{"op":"add","path":"/metadata/labels/exported-by", "value":"crane2"}]'
-      dest: "{{ item.path }}"
-    with_items: "{{ tokens.files }}"
-
   - name: Apply Transforms
     shell: "{{ crane_path }}/crane apply --export-dir=export/resources"
