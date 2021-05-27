@@ -16,3 +16,17 @@
   with_items: "{{ tokens.files }}"
   loop_control:
     loop_var: "token"
+
+- name: Find dockercfgs
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    patterns: 'Secret.*dockercfg.*yaml'
+    use_regex: true
+  register: dockercfgs
+
+- name: Move dockercfgs
+  shell: mv "{{ token.path }}" "{{ playbook_dir }}/output/{{ item }}-tokens"
+  with_items: "{{ dockercfgs.files }}"
+  loop_control:
+    loop_var: "dockercfg"
