@@ -13,3 +13,4 @@
   with_items: "{{ image_resources.files }}"
   loop_control:
     loop_var: "resource"
+    label: "{{ resource.path }}"
