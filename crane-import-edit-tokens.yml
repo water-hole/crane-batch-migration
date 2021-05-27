@@ -1,15 +1,15 @@
-- name: Find tokens
+- name: Find tokens and dockercfgs
   find:
     path: "{{ playbook_dir }}/output/{{ item }}-tokens"
     recurse: true
-    patterns: 'Secret.*token.*yaml'
+    patterns: 'Secret.*yaml'
     use_regex: true
   register: tokens
 
-- name: Edit Tokens
+- name: Edit Tokens and dockercfgs
   include_tasks: crane-import-edit-tokens-loop.yml
   with_items: "{{ tokens.files }}"  
   loop_control:
     loop_var: token
   vars:
-    namespace: "{{ item }}"   
+    namespace: "{{ item }}"
