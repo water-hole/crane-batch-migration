@@ -1,8 +1,10 @@
 - name: import tokens
   shell: |
-         if [ {{ crane_path }}/output/{{ async_item }}-tokens/* -gt 0 ]; then
-           echo yes
-           #oc create -f {{ crane_path }}/output/{{ async_item }}-tokens
+         shopt -s nullglob dotglob
+         files=({{ crane_path }}/output/{{ async_item }}-tokens/*)
+         len=$(echo -n $files | wc -m)
+         if [ ${len} -gt 0 ]; then
+           oc create -f {{ crane_path }}/output/{{ async_item }}-tokens
          fi
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
