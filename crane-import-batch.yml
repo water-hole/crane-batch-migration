@@ -1,8 +1,10 @@
 - name: import namespace
   shell: |
-         if [ {{ crane_path }}/output/{{ async_item }}/* -gt 0 ]; then
-         echo yes
-           #oc create -f {{ crane_path }}/output/{{ async_item }}
+         shopt -s nullglob dotglob
+         files=({{ crane_path }}/output/{{ async_item }}/*)
+         len=$(echo -n $files | wc -m)
+         if [ ${len} -gt 0 ]; then
+           oc create -f {{ crane_path }}/output/{{ async_item }}
          fi
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
