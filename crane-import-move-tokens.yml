@@ -16,6 +16,7 @@
   with_items: "{{ tokens.files }}"
   loop_control:
     loop_var: "token"
+    label: "{{ token.path }}"
 
 - name: Find dockercfgs
   find:
@@ -26,7 +27,8 @@
   register: dockercfgs
 
 - name: Move dockercfgs
-  shell: mv "{{ token.path }}" "{{ playbook_dir }}/output/{{ item }}-tokens"
+  shell: mv "{{ dockercfg.path }}" "{{ playbook_dir }}/output/{{ item }}-tokens"
   with_items: "{{ dockercfgs.files }}"
   loop_control:
     loop_var: "dockercfg"
+    label: "{{ dockercfg.path }}"
