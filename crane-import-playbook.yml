@@ -13,6 +13,10 @@
     include_tasks: crane-import-delete-kube-root-ca.yml
     with_items: "{{ namespaces }}"
 
+  - name: Delete image resources
+    include_tasks: crane-import-delete-image-resources.yml
+    with_items: "{{ namespaces }}"
+
   - name: Run batched import
     include_tasks: crane-import-batch.yml
     loop: "{{ namespaces | batch(batch_count) | list }}"
