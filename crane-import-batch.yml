@@ -1,6 +1,9 @@
 - name: import namespace
   shell: |
-         oc create -f {{ crane_path }}/output/{{ async_item }}
+         if [ {{ crane_path }}/output/{{ async_item }}/* -gt 0 ]; then
+         echo yes
+           #oc create -f {{ crane_path }}/output/{{ async_item }}
+         fi
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
   async: 360

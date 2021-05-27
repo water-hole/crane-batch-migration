@@ -1,6 +1,9 @@
 - name: import tokens
   shell: |
-         oc create -f {{ crane_path }}/output/{{ async_item }}-tokens
+         if [ {{ crane_path }}/output/{{ async_item }}-tokens/* -gt 0 ]; then
+           echo yes
+           #oc create -f {{ crane_path }}/output/{{ async_item }}-tokens
+         fi
   environment:
     KUBECONFIG: "{{ dst_kubeconfig }}"
   async: 360
