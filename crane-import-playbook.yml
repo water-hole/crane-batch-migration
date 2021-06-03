@@ -28,3 +28,7 @@
   - name: Create tokens
     include_tasks: crane-import-tokens.yml
     loop: "{{ namespaces | batch(batch_count) | list }}"
+
+  - name: Remove newly generated sa tokens
+    include_tasks: crane-import-remove-tokens.yml
+    with_items: "{{ namespaces }}"

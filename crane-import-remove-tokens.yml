@@ -1,0 +1,15 @@
+- name: Find ServiceAccounts
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    patterns: 'ServiceAccount.*yaml'
+    use_regex: true
+  register: serviceaccounts
+
+- name: Delete new generated tokens
+  include_tasks: crane-import-remove-tokens-loop.yml
+  with_items: "{{ serviceaccounts.files }}"
+  loop_control:
+    loop_var: sa
+  vars:
+    namespace: "{{ item }}"
