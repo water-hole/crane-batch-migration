@@ -19,7 +19,7 @@
   find:
     path: "{{ playbook_dir }}/output/{{ item }}"
     recurse: true
-    patterns: 'Secret.*token.*yaml'
+    patterns: 'Secret.*-token-.*yaml'
     use_regex: true
   register: tokens
 
