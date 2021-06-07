@@ -1,0 +1,55 @@
+- name: Delete kube-root-ca.crt configmap if it exists
+  file:
+    state: absent
+    path: "{{ playbook_dir }}/output/{{ item }}/ConfigMap_{{ item }}_kube-root-ca.crt.yaml"
+
+- name: Find image resources
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    patterns: 'Image.*yaml'
+    use_regex: true
+  register: image_resources
+
+- name: Delete image resources
+  file:
+    state: absent
+    path: "{{ resource.path }}"
+  with_items: "{{ image_resources.files }}"
+  loop_control:
+    loop_var: "resource"
+    label: "{{ resource.path }}"
+
+- name: Find dockercfg secrets
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    patterns: 'Secret.*dockercfg.*yaml'
+    use_regex: true
+  register: dockercfgs
+
+- name: Delete dockercfg secrets
+  file:
+    state: absent
+    path: "{{ dockercfg.path }}"
+  with_items: "{{ dockercfgs.files }}"
+  loop_control:
+    loop_var: "dockercfg"
+    label: "{{ dockercfg.path }}"
+
+- name: Find token secrets
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    patterns: 'Secret.*-token-.*yaml'
+    use_regex: true
+  register: tokens
+
+- name: Delete token secrets
+  file:
+    state: absent
+    path: "{{ token.path }}"
+  with_items: "{{ tokens.files }}"
+  loop_control:
+    loop_var: "token"
+    label: "{{ token.path }}"
