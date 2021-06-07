@@ -2,7 +2,7 @@
 This playbook will run the crane PoC utility asynchronously against batches of namespaces until it has completed running against all namespaces listed.
 
 # Requirements
-`dnf -y install ansible python3-openshift`
+`dnf -y install ansible`
 
 # Usage
 1. Copy `config.yml.example` to `config.yml`.

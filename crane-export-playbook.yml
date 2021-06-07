@@ -21,6 +21,24 @@
       warn: false
     when: download_crane
 
+  - name: Remove export directories
+    file:
+      state: absent
+      path: "{{ playbook_dir }}/export/resources/{{ item }}"
+    with_items: "{{ namespaces }}"
+
+  - name: Remove output directories
+    file:
+      state: absent
+      path: "{{ playbook_dir }}/output/{{ item }}"
+    with_items: "{{ namespaces }}"
+
+  - name: Remove transform directories
+    file:
+      state: absent
+      path: "{{ playbook_dir }}/transform/{{ item }}"
+    with_items: "{{ namespaces }}"
+
   - name: Run batched export
     include_tasks: crane-export-batch.yml
     loop: "{{ namespaces | batch(batch_count) | list }}"
