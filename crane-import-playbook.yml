@@ -6,7 +6,7 @@
     durations: "{{ item }}"
   tasks:
   - name: Delete unwanted resources
-    include_tasks: crane-delete-unwanted-resources.ymll
+    include_tasks: crane-delete-unwanted-resources.yml
     with_items: "{{ namespaces }}"
 
   - name: Run batched import
