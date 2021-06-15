@@ -3,5 +3,7 @@ batch_count: 10
 src_kubeconfig:
 dst_kubeconfig:
 crane_path: "{{ playbook_dir }}"
+export_qps: 100
+export_burst: 1000
 namespaces:
 - robot-shop

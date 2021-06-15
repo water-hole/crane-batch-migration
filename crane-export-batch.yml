@@ -1,5 +1,5 @@
 - name: export namespaces
-  shell: "{{ crane_path }}/crane export --namespace {{ async_item }}"
+  shell: "{{ crane_path }}/crane export --qps {{ export_qps }} --burst {{ export_burst }} --namespace {{ async_item }}"
   environment:
     KUBECONFIG: "{{ src_kubeconfig }}"
   async: 360
