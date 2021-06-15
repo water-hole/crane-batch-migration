@@ -3,19 +3,37 @@
     state: absent
     path: "{{ playbook_dir }}/output/{{ item }}/ConfigMap_{{ item }}_kube-root-ca.crt.yaml"
 
-- name: Find image resources
+- name: Find image stream tag resources
   find:
     path: "{{ playbook_dir }}/output/{{ item }}"
     recurse: true
-    patterns: 'Image.*yaml'
+    patterns: 'ImageStreamTag.*yaml'
     use_regex: true
-  register: image_resources
+  register: imagestreamtag_resources
 
-- name: Delete image resources
+- name: Delete image stream tag resources
   file:
     state: absent
     path: "{{ resource.path }}"
-  with_items: "{{ image_resources.files }}"
+  with_items: "{{ imagestreamtag_resources.files }}"
+  loop_control:
+    loop_var: "resource"
+    label: "{{ resource.path }}"
+
+- name: Find image stream resources
+  find:
+    path: "{{ playbook_dir }}/output/{{ item }}"
+    recurse: true
+    contains: '.*dockerImageReference:.*'
+    use_regex: true
+  register: imagestream_resources
+
+- name: Delete image stream resources
+  file:
+    state: absent
+    path: "{{ resource.path }}"
+  with_items: "{{ imagestream_resources.files }}"
+  when: '"ImageStream_" in resource.path'
   loop_control:
     loop_var: "resource"
     label: "{{ resource.path }}"
